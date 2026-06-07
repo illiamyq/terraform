@@ -9,3 +9,8 @@ builds/
 *.tfvars
 *.auto.tfvars
 notes
+
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/

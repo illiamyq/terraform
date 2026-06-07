@@ -1,14 +1,14 @@
 import sys
 import os
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '../../functions/order_validator'))
-
 import json
 import boto3
 from moto import mock_aws
 
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '../../functions/order_ingest'))
+
+
 @mock_aws
 def test_order_ingest():
-    # Set up mock AWS environment
     s3 = boto3.client("s3", region_name="us-east-1")
     sqs = boto3.client("sqs", region_name="us-east-1")
 
@@ -20,11 +20,11 @@ def test_order_ingest():
     os.environ["ORDER_BUCKET"] = bucket_name
     os.environ["ORDER_QUEUE_URL"] = queue_url
 
-    event = {
-        "body": json.dumps({"product": "laptop", "quantity": 2})
-    }
-
+    import importlib
     import handler
+    importlib.reload(handler)
+
+    event = {"body": json.dumps({"product": "laptop", "quantity": 2})}
     result = handler.lambda_handler(event, None)
 
     assert result["statusCode"] == 200

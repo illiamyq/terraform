@@ -1,10 +1,10 @@
 import sys
 import os
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '../../functions/order_validator'))
-
-import json
 import boto3
 from moto import mock_aws
+
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '../../functions/order_processor'))
+
 
 @mock_aws
 def test_order_processor():
@@ -14,9 +14,11 @@ def test_order_processor():
 
     os.environ["SNS_TOPIC_ARN"] = topic_arn
 
-    event = {"order_id": "123", "product": "laptop", "quantity": 2}
-
+    import importlib
     import handler
+    importlib.reload(handler)
+
+    event = {"order_id": "123", "product": "laptop", "quantity": 2}
     result = handler.lambda_handler(event, None)
 
     assert result["status"] == "processed"

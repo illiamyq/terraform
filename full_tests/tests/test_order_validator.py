@@ -1,6 +1,6 @@
 import sys
 import os
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '../functions/order_validator'))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '../../functions/order_validator'))
 
 import handler
 

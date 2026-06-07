@@ -20,13 +20,11 @@ def test_order_ingest():
     os.environ["ORDER_BUCKET"] = bucket_name
     os.environ["ORDER_QUEUE_URL"] = queue_url
 
-    import importlib
-    import handler
-    importlib.reload(handler)
-
-    event = {"body": json.dumps({"product": "laptop", "quantity": 2})}
-    result = handler.lambda_handler(event, None)
-
+    import ingest_handler as handler
+    result = handler.lambda_handler(
+        event={"body": json.dumps({"product": "laptop", "quantity": 2})},
+        context=None
+    )
     assert result["statusCode"] == 200
     body = json.loads(result["body"])
     assert "order_id" in body

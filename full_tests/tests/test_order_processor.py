@@ -14,11 +14,9 @@ def test_order_processor():
 
     os.environ["SNS_TOPIC_ARN"] = topic_arn
 
-    import importlib
-    import handler
-    importlib.reload(handler)
-
-    event = {"order_id": "123", "product": "laptop", "quantity": 2}
-    result = handler.lambda_handler(event, None)
-
+    import processor_handler as handler
+    result = handler.lambda_handler(
+        event={"order_id": "123", "product": "laptop", "quantity": 2},
+        context=None
+    )
     assert result["status"] == "processed"

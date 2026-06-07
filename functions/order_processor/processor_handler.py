@@ -4,7 +4,7 @@ import os
 
 
 def lambda_handler(event, context):
-    sns = boto3.client('sns')
+    sns = boto3.client('sns', region_name='us-east-1')
     order = event.get('order', event)
     message = f"Order processed: {json.dumps(order)}"
     sns.publish(

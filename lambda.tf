@@ -22,7 +22,7 @@ resource "aws_lambda_function" "order_ingest" {
   function_name    = "order-ingest"
   filename         = data.archive_file.order_ingest_zip.output_path
   source_code_hash = data.archive_file.order_ingest_zip.output_base64sha256
-  handler          = "handler.lambda_handler"
+  handler = "ingest_handler.lambda_handler"
   runtime          = "python3.11"
   role             = data.aws_iam_role.lab_role.arn
 
@@ -38,7 +38,7 @@ resource "aws_lambda_function" "order_validator" {
   function_name    = "order-validator"
   filename         = data.archive_file.order_validator_zip.output_path
   source_code_hash = data.archive_file.order_validator_zip.output_base64sha256
-  handler          = "handler.lambda_handler"
+  handler = "validator_handler.lambda_handler"
   runtime          = "python3.11"
   role             = data.aws_iam_role.lab_role.arn
 }
@@ -47,7 +47,7 @@ resource "aws_lambda_function" "order_processor" {
   function_name    = "order-processor"
   filename         = data.archive_file.order_processor_zip.output_path
   source_code_hash = data.archive_file.order_processor_zip.output_base64sha256
-  handler          = "handler.lambda_handler"
+  handler = "processor_handler.lambda_handler"
   runtime          = "python3.11"
   role             = data.aws_iam_role.lab_role.arn
 

@@ -1,9 +1,35 @@
-provider "aws" {
-    region = "us-east-1"
-    shared_credentials_files = ["~/.aws/credentials"]
-    profile = "default"
+terraform {
+  backend "s3" {
+    bucket         = "zadanie3-backend"
+    key            = "order-pipeline/terraform.tfstate"
+    region         = "us-east-1"
+    dynamodb_table = "terraform-locks-zadanie3"
+    encrypt        = true
+  }
+
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 5.0"
+    }
+    archive = {
+      source  = "hashicorp/archive"
+      version = "~> 2.0"
+    }
+    random = {
+      source  = "hashicorp/random"
+      version = "~> 3.0"
+    }
+  }
 }
+
+provider "aws" {
+  region                   = "us-east-1"
+  shared_credentials_files = ["~/.aws/credentials"]
+  profile                  = "default"
+}
+
 provider "archive" {}
 data "aws_iam_role" "lab_role" {
-    name = "LabRole"
+  name = "LabRole"
 }
